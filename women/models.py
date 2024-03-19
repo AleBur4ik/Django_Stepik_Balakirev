@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 from django.urls import reverse
@@ -20,7 +21,8 @@ class Women(models.Model):
                                 MinLengthValidator(5, message='мало символов!!! минимум 5!'),
                                 MaxLengthValidator(100, message='че так много!? максимум 100')
                             ])
-    photo = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, blank=True, null=True, verbose_name='Фото')
+    photo = models.ImageField(upload_to='photos/%Y/%m/%d/', default=None, blank=True, null=True,
+                              verbose_name='Фото')
     content = models.TextField(blank=True, verbose_name='Текст статьи')
     time_create = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время изменения')
@@ -32,6 +34,9 @@ class Women(models.Model):
     tags = models.ManyToManyField('TagPost', blank=True, related_name='tags', verbose_name='Теги')
     husband = models.OneToOneField('Husband', on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='wuman', verbose_name='Муж')
+
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, related_name='posts',
+                               null=True, default=None)
 
     objects = models.Manager()
     published = PublishedManager()
