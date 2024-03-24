@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from .private_data import EHP, email, S_A_GIT_SECRET
+from .private_data import EHP, email, S_A_GIT_SECRET, S_A_GITHUB_KEY
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -160,7 +160,7 @@ AUTH_USER_MODEL = 'users.User'
 
 DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default.png'
 
-SOCIAL_AUTH_GITHUB_KEY = '0531309764c889a76661'
+SOCIAL_AUTH_GITHUB_KEY = S_A_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = S_A_GIT_SECRET  # из secret_data
 
 SOCIAL_AUTH_PIPELINE = (
