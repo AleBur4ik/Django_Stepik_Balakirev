@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from .private_data import EHP, email, S_A_GIT_SECRET, S_A_GITHUB_KEY
+from .private_data import EHP, email, S_A_GIT_SECRET, S_A_GITHUB_KEY, AUTH_VK_KEY, AUTH_VK_SECRET
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+2ly69h&&ujz&jwft5b36(_(m9^q5b%j%ieae_m)880)t11#_u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sitewomen.ru']
 
 INTERNAL_IPS = ["127.0.0.1", ]
 
@@ -140,6 +140,7 @@ LOGIN_URL = 'users:login'
 
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.vk.VKOAuth2',
     'django.contrib.auth.backends.ModelBackend',
     'users.authentication.EmailAuthBackend',
 ]
@@ -162,6 +163,10 @@ DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default.png'
 
 SOCIAL_AUTH_GITHUB_KEY = S_A_GITHUB_KEY
 SOCIAL_AUTH_GITHUB_SECRET = S_A_GIT_SECRET  # из secret_data
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = AUTH_VK_KEY
+SOCIAL_AUTH_VK_OAUTH2_SECRET = AUTH_VK_SECRET
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
