@@ -6,10 +6,11 @@ from django.urls import reverse, reverse_lazy
 from django.template.loader import render_to_string
 from django.core.paginator import Paginator
 
-from .forms import AddPostForm, UploadFileForm
+from .forms import AddPostForm, UploadFileForm, ContactForm
 from .models import Women, Category, TagPost, UploadFiles
 from django.views import View
-from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, DetailView, FormView, CreateView, \
+    UpdateView, DeleteView
 
 from .utils import DataMixin
 
@@ -80,9 +81,15 @@ class DeletePage(DeleteView):
     success_url = reverse_lazy('home')
 
 
-@permission_required(perm='women.view_women', raise_exception=True)
-def contact(request):
-    return HttpResponse('Обратная связь')
+class ContactFormView(LoginRequiredMixin, DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'women/contact.html'
+    success_url = reverse_lazy('home')
+    title_page = 'Обратная связь'
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return super().form_valid(form)
 
 
 def login(request):
@@ -93,7 +100,6 @@ class WomenCategory(DataMixin, ListView):
     template_name = 'women/index.html'
     context_object_name = 'posts'
     allow_empty = False
-
 
     def get_queryset(self):
         return Women.published.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat')
